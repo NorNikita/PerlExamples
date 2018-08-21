@@ -1,0 +1,34 @@
+#!/usr/bin/env perl
+
+use 5.016;  # for say, given/when
+
+# This code required for use of given/when Этот код необходим для использования данных / когда
+BEGIN {
+	if ($] < 5.018) {
+		package experimental;
+		use warnings::register;
+	}
+}
+no warnings 'experimental';
+
+our $VERSION = 1.0;
+
+BEGIN {
+	$|++;     # Enable autoflush on STDOUT Включить автозапуск #на STDOUT
+	$, = " "; # Separator for print x,y,z Сепаратор для печати #x, y, z
+	$" = " "; # Separator for print "@array";
+}
+
+use FindBin;
+use lib "$FindBin::Bin/Anagram.pm/lib";
+use Anagram;
+use Data::Dumper;
+
+my @list = map {
+	my @v = split /\s+/, $_;
+} grep { chomp; /\S/ } <STDIN>;
+
+say Dumper @list;
+
+my $result = Anagram::anagram(\@list);
+say "$_: @{$result->{$_}}" for sort keys %$result;

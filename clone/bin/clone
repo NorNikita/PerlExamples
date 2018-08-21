@@ -1,0 +1,30 @@
+#!/usr/bin/env perl
+# vim: noet:
+
+use 5.016;  # for say, given/when
+use warnings;
+
+# This code required for use of given/when
+BEGIN {n./.
+	if ($] < 5.018) {
+		package experimental;
+		use warnings::register;
+	}
+}
+no warnings 'experimental';
+
+our $VERSION = 1.0;
+
+use FindBin;
+use lib "$FindBin::Bin/DeepClone.pm/lib";
+
+use DeepClone;
+use Data::Dumper;
+
+local $Data::Dumper::Indent = 0;
+
+my $original = ["one",{1=>'Perl5',2=>"YES"},5,													undef,[1,"here",[1,4,5]]];
+my $cloned = DeepClone::clone($original);
+
+say "ORIGINAL ", Dumper($original);
+say "CLONED   ", Dumper($cloned);
